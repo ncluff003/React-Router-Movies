@@ -1,27 +1,41 @@
-import React from 'react';
+import React from "react";
+import { Link, useRouteMatch, useHistory } from "react-router-dom";
+import MovieCard from "./MovieCard";
 
 export default function MovieList(props) {
+  const { movies } = props;
+  console.log(movies);
+
+  const history = useHistory();
+
   return (
-    <div className="movie-list">
-      {props.movies.map(movie => (
-        <MovieDetails key={movie.id} movie={movie} />
-      ))}
-    </div>
+    movies && (
+      <div className="movie-list">
+        {props.movies.map((movie) => (
+          <MovieDetails key={movie.id} movie={movie} />
+        ))}
+      </div>
+    )
   );
 }
 
 function MovieDetails(props) {
-  const { title, director, metascore } = props.movie;
+  const { id, title, director, metascore } = props.movie;
+  const { url } = useRouteMatch();
+  console.log(url, id, `${url}movies/${id}`);
 
   return (
-    <div className="movie-card">
-      <h2>{title}</h2>
-      <div className="movie-director">
-        Director: <em>{director}</em>
-      </div>
-      <div className="movie-metascore">
-        Metascore: <strong>{metascore}</strong>
-      </div>
-    </div>
+    <Link to={`${url}movies/${id}`}>
+      <MovieCard movie={props.movie} />
+      {/* <div className="movie-card">
+        <h2>{title}</h2>
+        <div className="movie-director">
+          Director: <em>{director}</em>
+        </div>
+        <div className="movie-metascore">
+          Metascore: <strong>{metascore}</strong>
+        </div>
+      </div> */}
+    </Link>
   );
 }
